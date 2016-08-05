@@ -223,7 +223,7 @@ Parse.Cloud.define("startGame", function(request, response)
 
 Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
-    updateData(request.params).then(function(result)
+    updateData(request.object).then(function(result)
     {
         /*
         console.log("success promise return " + result);
