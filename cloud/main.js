@@ -225,6 +225,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
     updateData(request.params).then(function(result)
     {
+        /*
         console.log("success promise return " + result);
         var user = updateTicketCount();
         var ticket = user.get("ticket");
@@ -252,7 +253,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
         result.ticketRecoverDate = user.get("ticketRecoverDate");
         result.ticket = user.get("ticket");
         console.log(result);
-
+         */
         response.success(result);
     });
 });
