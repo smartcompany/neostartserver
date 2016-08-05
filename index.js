@@ -4,14 +4,14 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 
-var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI || 'mongodb://smart:k12345@ds019078.mlab.com:19078/smart';
+var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI || 'mongodb://neostart:k5882@ds145295.mlab.com:45295/neostartserver';
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://smart:k12345@ds019078.mlab.com:19078/smart',
+  databaseURI: databaseUri || 'mongodb://neostart:k5882@ds145295.mlab.com:45295/neostartserver',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || '6oNn8UQpvU8r4Jl3ABAvxLqlIQHlpiAiPr2gNvQZ',
   masterKey: process.env.MASTER_KEY || 'Sio1RdFtsXxa9Qm29kE7pNe0e4j92wZuEYANcTt4', //Add your master key here. Keep it secret!
