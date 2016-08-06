@@ -285,7 +285,7 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 	weekday["Thursday"] = 4;
 	weekday["Friday"] = 5;
 	weekday["Saturday"] = 6;
-	
+	/*
 	
 	//this function is called every specific time
 	var targetDay = "Sunday";
@@ -316,6 +316,7 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 			status.error("week high score reset failed : " + error.message);
 		}
 	});
+	 */
 });
 
 
