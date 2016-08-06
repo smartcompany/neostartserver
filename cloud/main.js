@@ -25,10 +25,17 @@ Parse.Cloud.define("finishGame", function(request, response)
 				console.log("Parse.User.current is null");
 			}
 			
+			response.success("success become");
+			
 		}, function (error)
 		{
+			response.error(error);
 			// The token could not be validated.
 		});
+	}
+	else
+	{
+		response.success("get current user");
 	}
 	/*
 	var map = request.params;
