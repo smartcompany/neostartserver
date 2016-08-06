@@ -4,7 +4,7 @@ const g_levelUpdateCondition = 100;
 
 function updateTicketCount()
 {
-    const ticketGivingSecond = 60 * g_ticketGivingMinute;
+	const ticketGivingSecond = 60 * g_ticketGivingMinute;
     
     var user = Parse.User.current();
     var ticket = user.get("ticket");
@@ -82,33 +82,33 @@ function setObject(key, map)
     
     query.equalTo("user", user);
     return query.first().then(function(object)
-    {
-       console.log("object " + object);
-       return object;
-    },
-    function(error)
-    {
-       console.log("error " + error);
-       return null;
-    }).then(function(object)
-    {
-       if(object == null)
-       {
-            object = new objTable();
-       }
-       
-       var objMap = map[key];
-       for(objKey in objMap)
-       {
-            object.set(objKey, objMap[objKey]);
-            console.log("key " + objKey + " value " + object[objKey]);
-       }
-    
-       object.set("user", user);
-      
-       console.log("object saved in promise" + object);
-       return  object.save();
-    });
+	{
+		console.log("object " + object);
+		return object;
+	},
+	function(error)
+	{
+		console.log("error " + error);
+		return null;
+	}).then(function(object)
+	{
+		if(object == null)
+		{
+			object = new objTable();
+		}
+		
+		var objMap = map[key];
+		for(objKey in objMap)
+		{
+			object.set(objKey, objMap[objKey]);
+			console.log("key " + objKey + " value " + object[objKey]);
+		}
+		
+		object.set("user", user);
+		
+		console.log("object saved in promise" + object);
+		return  object.save();
+	});
 }
 
 function defineMapIfNull(map, key, value)
@@ -169,7 +169,7 @@ function updateData(map)
                 updateRelatedUserValues(userKey, userMap[userKey]);
                 user.set(userKey, userMap[userKey]);
             }
-        
+            
             user.save();
         }
         else
@@ -193,43 +193,6 @@ Parse.Cloud.define("startGame", function(request, response)
         var user = updateTicketCount();
         var ticket = user.get("ticket");
         var date = new Date();
-        
-        if(ticket <= 0)
-        {
-            response.error("don't have ticket");
-            return;
-        }
-        
-        user.increment("ticket", -1);
-        console.log("decrease ticket -1 rest ticket" + user.get("ticket"));
-        
-        if(user.get("ticket") == g_maxTicket - 1)
-        {
-            console.log("reset ticketRecoverDate " + date.toISOString());
-            user.set("ticketRecoverDate",date.toISOString());
-        }
-        
-        user.save();
-        
-        var result = {};
-        result.date = date.toISOString();
-        result.ticketRecoverDate = user.get("ticketRecoverDate");
-        result.ticket = user.get("ticket");
-        console.log(result);
-        
-        response.success(result);
-    });
-});
-
-Parse.Cloud.beforeSave(Parse.User, function(request, response)
-{
-    updateData(request.object).then(function(result)
-    {
-        /*
-        console.log("success promise return " + result);
-        var user = updateTicketCount();
-        var ticket = user.get("ticket");
-        var date = new Date();
 
         if(ticket <= 0)
         {
@@ -253,106 +216,105 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
         result.ticketRecoverDate = user.get("ticketRecoverDate");
         result.ticket = user.get("ticket");
         console.log(result);
-         */
+
         response.success(result);
     });
 });
 
 Parse.Cloud.define("finishGame", function(request, response)
 {
-    console.log("finish Game " + request.params);
-    updateData(request.params).then(function(result)
-    {
-       console.log("success promise return " + result);
-       var user = updateTicketCount();
-       user.save();
-       
-       // cacurate level
-       // give reward etc
-       
-       var date = new Date();
-       var result = {};
-       result.User = user;
-       result.date = date.toISOString();
-       //result.ticketRecoverDate = user.get("ticketRecoverDate");
-       //result.ticket = user.get("ticket");
-       console.log(result);
-       
-       response.success(result);
-    });
+	var user = Parse.User.current();
+	var map = request.params;
+	var score = map["score"];
+	
+	if(user.get("highScore") < score)
+	{
+		console.log("set high score to " + score);
+		user.set("highScore", score);
+	}
+	
+	if(user.get("highScoreWeek") < score)
+	{
+		console.log("set weekly high score to " + score);
+		user.set("highScoreWeek", score);
+	}
+	
+	user.save();
+
+	response.success("score saved");
 });
 
 Parse.Cloud.define("getGameInfo", function(request, response)
 {
-    console.log("getGameInfo called");
-    Parse.Config.get().then(function(config)
-    {
-        var user = updateTicketCount();
-        user.save();
-            
-        var result = {};
-        var date = new Date();
-        result.date = date.toISOString();
-        result.ticketGivingMinute = g_ticketGivingMinute;
-        result.maxTicket = g_maxTicket;
-        console.log("getGameInfo return " + result);
-        response.success(result);
-        console.log("success to response getGameInfo");
-    },
-    function(error)
-    {
-        console.log("Failed to fetch. Using Cached Config.");
-        response.error();
-    });
+	console.log("getGameInfo called");
+	Parse.Config.get().then(function(config)
+	{
+		var user = updateTicketCount();
+		user.save();
+		
+		var result = {};
+		var date = new Date();
+		result.date = date.toISOString();
+		result.ticketGivingMinute = g_ticketGivingMinute;
+		result.maxTicket = g_maxTicket;
+		console.log("getGameInfo return " + result);
+		response.success(result);
+		console.log("success to response getGameInfo");
+	},
+	function(error)
+	{
+		console.log("Failed to fetch. Using Cached Config.");
+		response.error();
+	});
 });
 
 //---------------- schedule job -------------------------------//
 
 Parse.Cloud.job("resetWeeklyScore", function(request, status)
 {
-    // Set up to modify user data
-    // dont call Parse.initialize to use master key
-    Parse.Cloud.useMasterKey();
-                
-     weekday = {};
-     weekday["Sunday"] = 0;
-     weekday["Monday"] = 1;
-     weekday["Tuesday"] = 2;
-     weekday["Wednesday"] = 3;
-     weekday["Thursday"] = 4;
-     weekday["Friday"] = 5;
-     weekday["Saturday"] = 6;
-
-                
-     //this function is called every specific time
-     var targetDay = "Sunday";
-     var d = new Date();
-     if(weekday[targetDay] != d.getDay())
-     {
-         status.success("today is not " + targetDay);
-         return;
-     }
-                
-    var query = new Parse.Query(Parse.User);
-    query.find(
-    {
-        success: function(results)
-        {
-            for (var i = 0; i < results.length; i++)
-            {
-                var object = results[i];
-                console.log("update user " + object.get("id"));
-                object.set("highScoreWeek", 0);
-                object.save();
-            }
-               
-            status.success("week high score reset");
-        },
-        error: function(error)
-        {
-            status.error("week high score reset failed : " + error.message);
-        }
-    });
+	// Set up to modify user data
+	// dont call Parse.initialize to use master key
+	Parse.Cloud.useMasterKey();
+	
+	weekday = {};
+	weekday["Sunday"] = 0;
+	weekday["Monday"] = 1;
+	weekday["Tuesday"] = 2;
+	weekday["Wednesday"] = 3;
+	weekday["Thursday"] = 4;
+	weekday["Friday"] = 5;
+	weekday["Saturday"] = 6;
+	
+	
+	//this function is called every specific time
+	var targetDay = "Sunday";
+	var d = new Date();
+	if(weekday[targetDay] != d.getDay())
+	{
+		status.success("today is not " + targetDay);
+		return;
+	}
+	
+	var query = new Parse.Query(Parse.User);
+	query.find(
+	{
+		success: function(results)
+		{
+			for (var i = 0; i < results.length; i++)
+			{
+				var object = results[i];
+				console.log("update user " + object.get("id"));
+				object.set("highScoreWeek", 0);
+				object.save();
+			}
+			
+			status.success("week high score reset");
+		},
+		error: function(error)
+		{
+			status.error("week high score reset failed : " + error.message);
+		}
+	});
 });
 
 
