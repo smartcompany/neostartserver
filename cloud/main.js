@@ -21,7 +21,14 @@ Parse.Cloud.define("finishGame", function(request, response)
 		success: function(results)
 		{
 			console.log("success ");
-			return results[0];
+			var object;
+			for (var i = 0; i < results.length; i++)
+			{
+				object = results[i];
+				console.log("id" + object.id);
+			}
+			
+			return object;
 		},
 		error: function(error)
 		{
