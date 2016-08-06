@@ -36,7 +36,9 @@ Parse.Cloud.define("finishGame", function(request, response)
 					console.log("set weekly high score to " + score);
 					object.set("highScoreWeek", score);
 				}
+				console.log("before save ");
 				object.save();
+				console.log("after save ");
 			}
 			
 			response.success("success");
