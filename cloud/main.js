@@ -5,40 +5,18 @@ const g_levelUpdateCondition = 100;
 
 Parse.Cloud.define("finishGame", function(request, response)
 {
-	var user = Parse.User.current();
-	if(user == null)
+	var user = request.user; // request.user replaces Parse.User.current()
+	var token = user.getSessionToken(); // get session token from request.user
+	
+	var query = new Parse.Query(Parse.User);
+	query.equalTo('recipient', user);
+	query.find({ sessionToken: token }) // pass the session token to find()
+	.then(function(messages)
 	{
-		console.log("Parse.User.current is null");
-		
-		var sessionToken = request.user.getSessionToken();
-		
-		Parse.User.enableUnsafeCurrentUser();
-		console.log("become with token " + sessionToken);
-		Parse.User.become(sessionToken).then(function (user)
-		{
-			var user = Parse.User.current();
-			if (user)
-			{
-				console.log("Parse.User.current is set");
-			}
-			else
-			{
-				console.log("Parse.User.current is null");
-			}
-			
-			response.success("success become");
-			
-		}, function (error)
-		{
-			console.log("Parse beome error");
-			response.error(error);
-			// The token could not be validated.
-		});
-	}
-	else
-	{
-		response.success("get current user");
-	}
+		response.success(messages);
+	});
+	
+ 
 	/*
 	var map = request.params;
 	var score = map["score"];
