@@ -31,6 +31,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 	}).then(function(result)
 	{
 		console.log("sore is " + score);
+		var highScore = result.get("highScore");
+		console.log("highsore is " + highScore);
 		
 		if(result.get("highScore") < score)
 		{
