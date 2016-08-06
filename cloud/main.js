@@ -7,11 +7,15 @@ Parse.Cloud.define("finishGame", function(request, response)
 {
 	var user = request.user; // request.user replaces Parse.User.current()
 	var token = user.getSessionToken(); // get session token from request.user
+	var map = request.params;
+	var score = map["score"];
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
 	
-	query.equalTo('id', user.id);
+	console.log("user id " + user.id);
+	
+	query.equalTo('_id', user.id);
 	query.find(
 	{
 		success: function(results)
@@ -20,6 +24,19 @@ Parse.Cloud.define("finishGame", function(request, response)
 			{
 				var object = results[i];
 				console.log("id" + object.id);
+				
+				if(object.get("highScore") < score)
+				{
+					console.log("set high score to " + score);
+					object.set("highScore", score);
+				}
+				
+				if(findUser.get("highScoreWeek") < score)
+				{
+					console.log("set weekly high score to " + score);
+					object.set("highScoreWeek", score);
+				}
+				object.save();
 			}
 			
 			response.success("success");
