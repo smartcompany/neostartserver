@@ -10,8 +10,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
-	/*
-	query.equalTo('recipient', user);
+	
+	query.equalTo('id', user.id);
 	query.find(
 	{
 		success: function(results)
@@ -30,7 +30,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 			response.error(error);
 		}
 	});
-	 */
+	
+	/*
 	
 	console.log("user id" + user.id);
 	query.get(user.id,
@@ -60,6 +61,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 			response.error(error);
 		}
 	});
+	 */
  
 	/*
 	var map = request.params;
