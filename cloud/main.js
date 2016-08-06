@@ -40,6 +40,42 @@ Parse.Cloud.define("finishGame", function(request, response)
 	});
 });
 
+Parse.Cloud.beforeSave(Parse.User, function(request, response)
+{
+	var user = request.user;
+	var score = user["score"];
+	
+	console.log("parse query user");
+	var query = new Parse.Query(Parse.User);
+	
+	console.log("user id " + user.id);
+	query.equalTo('_id', user.id);
+	query.first().then(function(result)
+	{
+		console.log("id" + result.id);
+		var highScore = result.get("highScore");
+		var highScoreWeek = result.get("highScoreWeek") ;
+		
+		if(highScore == null || highScore < score)
+		{
+			console.log("set high score to " + score);
+			result.set("highScore", score);
+		}
+		
+		if(highScoreWeek == null || highScoreWeek < score)
+		{
+			console.log("set weekly high score to " + score);
+			result.set("highScoreWeek", score);
+		}
+		console.log("before save ");
+		result.save();
+		console.log("after save ");
+		
+		response.success("success");
+	});
+}
+
+
 /*
 function updateTicketCount()
 {
