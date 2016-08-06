@@ -14,68 +14,20 @@ Parse.Cloud.define("finishGame", function(request, response)
 	var query = new Parse.Query(Parse.User);
 	
 	console.log("user id " + user.id);
-	
 	query.equalTo('_id', user.id);
-	query.find().then(function(results)
+	query.first().then(function(result)
 	{
-		console.log("success ");
-		
-		for (var i = 0; i < results.length; i++)
-		{
-			var object = results[i];
-			console.log("id" + object.id);
-			
-			if(object.get("highScore") < score)
-			{
-				console.log("set high score to " + score);
-				object.set("highScore", score);
-			}
-			
-			if(object.get("highScoreWeek") < score)
-			{
-				console.log("set weekly high score to " + score);
-				object.set("highScoreWeek", score);
-			}
-			console.log("before save ");
-			object.save();
-			console.log("after save ");
-		}
-		
-		response.success("success");
-	});
-	/*
-	query.find(
-	{
-		success: function(results)
-		{
-			console.log("success ");
-			var object;
-			for (var i = 0; i < results.length; i++)
-			{
-				object = results[i];
-				console.log("id" + object.id);
-			}
-			
-			return object;
-		},
-		error: function(error)
-		{
-			console.log("Error: " + error.code + " " + error.message);
-			response.error(error);
-		}
-	}).then(function(result)
-	{
-		console.log("sore is " + score + " " + result.id);
+		console.log("id" + result.id);
 		var highScore = result.get("highScore");
-		console.log("highsore is " + highScore);
+		var highScoreWeek = result.get("highScoreWeek") ;
 		
-		if(result.get("highScore") < score)
+		if(highScore == null || highScore < score)
 		{
 			console.log("set high score to " + score);
 			result.set("highScore", score);
 		}
 		
-		if(result.get("highScoreWeek") < score)
+		if(highScoreWeek == null || highScoreWeek < score)
 		{
 			console.log("set weekly high score to " + score);
 			result.set("highScoreWeek", score);
@@ -86,28 +38,6 @@ Parse.Cloud.define("finishGame", function(request, response)
 		
 		response.success("success");
 	});
-	
-*/
-	/*
-	var map = request.params;
-	var score = map["score"];
-	
-	if(user.get("highScore") < score)
-	{
-		console.log("set high score to " + score);
-		user.set("highScore", score);
-	}
-	
-	if(user.get("highScoreWeek") < score)
-	{
-		console.log("set weekly high score to " + score);
-		user.set("highScoreWeek", score);
-	}
-	
-	user.save();
-	
-	response.success("score saved");
-	 */
 });
 
 /*
