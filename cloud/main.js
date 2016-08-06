@@ -10,7 +10,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
-	query.equalTo('recipient', user);
+	//query.equalTo('recipient', user);
 	query.find(
 	{
 		success: function(results)
