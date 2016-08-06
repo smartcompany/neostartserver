@@ -16,8 +16,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 	console.log("user id " + user.id);
 	
 	query.equalTo('_id', user.id);
-	query.find
-	(
+	query.find(
+	{
 		success: function(results)
 		{
 			console.log("success ");
@@ -28,8 +28,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 			console.log("Error: " + error.code + " " + error.message);
 			response.error(error);
 		}
-
-	).then(function(result))
+	}).then(function(result)
 	{
 		console.log("sore is " + score);
 		
