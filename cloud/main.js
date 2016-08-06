@@ -268,7 +268,7 @@ Parse.Cloud.define("getGameInfo", function(request, response)
 		response.error();
 	});
 });
-
+*/
 //---------------- schedule job -------------------------------//
 
 Parse.Cloud.job("resetWeeklyScore", function(request, status)
@@ -318,5 +318,5 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 	});
 });
 
-*/
+
 
