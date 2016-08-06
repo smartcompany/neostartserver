@@ -16,6 +16,34 @@ Parse.Cloud.define("finishGame", function(request, response)
 	console.log("user id " + user.id);
 	
 	query.equalTo('_id', user.id);
+	query.find().then(function(results)
+	{
+		console.log("success ");
+		
+		for (var i = 0; i < results.length; i++)
+		{
+			var object = results[i];
+			console.log("id" + object.id);
+			
+			if(object.get("highScore") < score)
+			{
+				console.log("set high score to " + score);
+				object.set("highScore", score);
+			}
+			
+			if(object.get("highScoreWeek") < score)
+			{
+				console.log("set weekly high score to " + score);
+				object.set("highScoreWeek", score);
+			}
+			console.log("before save ");
+			object.save();
+			console.log("after save ");
+		}
+		
+		response.success("success");
+	});
+	/*
 	query.find(
 	{
 		success: function(results)
@@ -59,7 +87,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 		response.success("success");
 	});
 	
-
+*/
 	/*
 	var map = request.params;
 	var score = map["score"];
