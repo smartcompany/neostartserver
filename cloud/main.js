@@ -1,3 +1,4 @@
+/*
 const g_ticketGivingMinute = 15;
 const g_maxTicket = 5;
 const g_levelUpdateCondition = 100;
@@ -317,5 +318,5 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 	});
 });
 
-
+*/
 
