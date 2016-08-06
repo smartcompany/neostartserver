@@ -1,8 +1,8 @@
-/*
+
 const g_ticketGivingMinute = 15;
 const g_maxTicket = 5;
 const g_levelUpdateCondition = 100;
-
+/*
 function updateTicketCount()
 {
 	const ticketGivingSecond = 60 * g_ticketGivingMinute;
