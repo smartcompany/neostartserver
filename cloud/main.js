@@ -10,12 +10,21 @@ Parse.Cloud.define("finishGame", function(request, response)
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
-	//query.equalTo('recipient', user);
-	query.find({ sessionToken: token }) // pass the session token to find()
-	.then(function(messages)
+	query.equalTo('recipient', user);
+	query.find(
 	{
-		console.log("return query");
-		response.success(messages);
+		success: function(results)
+		{
+			for (var i = 0; i < results.length; i++)
+			{
+				var object = results[i];
+				console.log("id" + object.id);
+			}
+		},
+		error: function(error)
+		{
+			console.log("Error: " + error.code + " " + error.message);
+		}
 	});
 	
  
