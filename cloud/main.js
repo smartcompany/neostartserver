@@ -275,7 +275,7 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 {
 	// Set up to modify user data
 	// dont call Parse.initialize to use master key
-	Parse.Cloud.useMasterKey();
+	// Parse.Cloud.useMasterKey();
 	
 	weekday = {};
 	weekday["Sunday"] = 0;
