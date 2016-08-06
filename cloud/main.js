@@ -2,6 +2,30 @@
 const g_ticketGivingMinute = 15;
 const g_maxTicket = 5;
 const g_levelUpdateCondition = 100;
+
+Parse.Cloud.define("finishGame", function(request, response)
+{
+	var user = Parse.User.current();
+	var map = request.params;
+	var score = map["score"];
+	
+	if(user.get("highScore") < score)
+	{
+		console.log("set high score to " + score);
+		user.set("highScore", score);
+	}
+	
+	if(user.get("highScoreWeek") < score)
+	{
+		console.log("set weekly high score to " + score);
+		user.set("highScoreWeek", score);
+	}
+	
+	user.save();
+	
+	response.success("score saved");
+});
+
 /*
 function updateTicketCount()
 {
@@ -222,29 +246,6 @@ Parse.Cloud.define("startGame", function(request, response)
     });
 });
 
-Parse.Cloud.define("finishGame", function(request, response)
-{
-	var user = Parse.User.current();
-	var map = request.params;
-	var score = map["score"];
-	
-	if(user.get("highScore") < score)
-	{
-		console.log("set high score to " + score);
-		user.set("highScore", score);
-	}
-	
-	if(user.get("highScoreWeek") < score)
-	{
-		console.log("set weekly high score to " + score);
-		user.set("highScoreWeek", score);
-	}
-	
-	user.save();
-
-	response.success("score saved");
-});
-
 Parse.Cloud.define("getGameInfo", function(request, response)
 {
 	console.log("getGameInfo called");
@@ -268,7 +269,9 @@ Parse.Cloud.define("getGameInfo", function(request, response)
 		response.error();
 	});
 });
-*/
+
+
+
 //---------------- schedule job -------------------------------//
 
 Parse.Cloud.job("resetWeeklyScore", function(request, status)
@@ -285,7 +288,7 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 	weekday["Thursday"] = 4;
 	weekday["Friday"] = 5;
 	weekday["Saturday"] = 6;
-	/*
+	
 	
 	//this function is called every specific time
 	var targetDay = "Sunday";
@@ -316,8 +319,8 @@ Parse.Cloud.job("resetWeeklyScore", function(request, status)
 			status.error("week high score reset failed : " + error.message);
 		}
 	});
-	 */
 });
+ */
 
 
 
