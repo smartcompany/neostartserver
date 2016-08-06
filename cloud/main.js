@@ -13,6 +13,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 		var sessionToken = request.user.getSessionToken();
 		
 		console.log("become");
+		Parse.User.enableUnsafeCurrentUser();
 		Parse.User.become(sessionToken).then(function (user)
 		{
 			var user = Parse.User.current();
