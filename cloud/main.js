@@ -45,6 +45,11 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 	var user = request.user;
 	var params = request.params;
 	
+	for(key in user)
+	{
+		console.log("user key " + key + "user value " + user[key]);
+	}
+	
 	if (params == null)
 	{
 		console.log("params is null");
