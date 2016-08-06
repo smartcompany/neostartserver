@@ -6,6 +6,31 @@ const g_levelUpdateCondition = 100;
 Parse.Cloud.define("finishGame", function(request, response)
 {
 	var user = Parse.User.current();
+	if(user == null)
+	{
+		console.log("Parse.User.current is null");
+		
+		var sessionToken = request.user.getSessionToken();
+		
+		console.log("become");
+		Parse.User.become(sessionToken).then(function (user)
+		{
+			var user = Parse.User.current();
+			if (user)
+			{
+				console.log("Parse.User.current is set");
+			}
+			else
+			{
+				console.log("Parse.User.current is null");
+			}
+			
+		}, function (error)
+		{
+			// The token could not be validated.
+		});
+	}
+	/*
 	var map = request.params;
 	var score = map["score"];
 	
@@ -24,6 +49,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 	user.save();
 	
 	response.success("score saved");
+	 */
 });
 
 /*
