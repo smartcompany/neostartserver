@@ -43,7 +43,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
 	var user = request.user;
-	var score = user["score"];
+	var params = request.params;
+	var score = params["score"];
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
