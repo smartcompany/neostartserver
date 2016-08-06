@@ -16,72 +16,42 @@ Parse.Cloud.define("finishGame", function(request, response)
 	console.log("user id " + user.id);
 	
 	query.equalTo('_id', user.id);
-	query.find(
-	{
+	query.find
+	(
 		success: function(results)
 		{
-			for (var i = 0; i < results.length; i++)
-			{
-				var object = results[i];
-				console.log("id" + object.id);
-				
-				if(object.get("highScore") < score)
-				{
-					console.log("set high score to " + score);
-					object.set("highScore", score);
-				}
-				
-				if(findUser.get("highScoreWeek") < score)
-				{
-					console.log("set weekly high score to " + score);
-					object.set("highScoreWeek", score);
-				}
-				console.log("before save ");
-				object.save();
-				console.log("after save ");
-			}
-			
-			response.success("success");
+			console.log("success ");
+			return results[0];
 		},
 		error: function(error)
 		{
 			console.log("Error: " + error.code + " " + error.message);
 			response.error(error);
 		}
-	});
-	
-	/*
-	
-	console.log("user id" + user.id);
-	query.get(user.id,
+
+	).then(function(result))
 	{
-		success: function(findUser)
+		console.log("sore is " + score);
+		
+		if(result.get("highScore") < score)
 		{
-			if(findUser.get("highScore") < score)
-			{
-				console.log("set high score to " + score);
-				findUser.set("highScore", score);
-			}
-			
-			if(findUser.get("highScoreWeek") < score)
-			{
-				console.log("set weekly high score to " + score);
-				findUser.set("highScoreWeek", score);
-			}
-			findUser.save();
-			
-			console.log("success");
-			
-			response.success("success");
-		},
-		error: function(error)
-		{
-			console.error("Got an error " + error.code + " : " + error.message);
-			response.error(error);
+			console.log("set high score to " + score);
+			result.set("highScore", score);
 		}
+		
+		if(result.get("highScoreWeek") < score)
+		{
+			console.log("set weekly high score to " + score);
+			result.set("highScoreWeek", score);
+		}
+		console.log("before save ");
+		result.save();
+		console.log("after save ");
+		
+		response.success("success");
 	});
-	 */
- 
+	
+
 	/*
 	var map = request.params;
 	var score = map["score"];
