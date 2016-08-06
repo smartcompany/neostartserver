@@ -73,7 +73,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 		
 		response.success("success");
 	});
-}
+});
 
 
 /*
