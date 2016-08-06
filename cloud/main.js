@@ -30,7 +30,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 		}
 	}).then(function(result)
 	{
-		console.log("sore is " + score);
+		console.log("sore is " + score + " " + result.id);
 		var highScore = result.get("highScore");
 		console.log("highsore is " + highScore);
 		
