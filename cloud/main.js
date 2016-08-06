@@ -12,8 +12,8 @@ Parse.Cloud.define("finishGame", function(request, response)
 		
 		var sessionToken = request.user.getSessionToken();
 		
-		console.log("become");
 		Parse.User.enableUnsafeCurrentUser();
+		console.log("become with token " + sessionToken);
 		Parse.User.become(sessionToken).then(function (user)
 		{
 			var user = Parse.User.current();
@@ -30,6 +30,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 			
 		}, function (error)
 		{
+			console.log("Parse beome error");
 			response.error(error);
 			// The token could not be validated.
 		});
