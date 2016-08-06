@@ -15,7 +15,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || '6oNn8UQpvU8r4Jl3ABAvxLqlIQHlpiAiPr2gNvQZ',
   masterKey: process.env.MASTER_KEY || 'Sio1RdFtsXxa9Qm29kE7pNe0e4j92wZuEYANcTt4', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'https://localhost:1337',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'https://neostartserver.herokuapp.com/parse',  // Don't forget to change to https if needed
   facebookAppIds : process.env.FACEBOOK_APP_ID || '913764205386593',
   restAPIKey : 'rbaNGUJJh9xAUfikGKJNoSik3MGhxaIcQqcXYHYz',
   clientKey : 'xEGyDaoAZEgFm7UNEzebx8YucSmHRvue1NoaTYNG',
