@@ -8,11 +8,13 @@ Parse.Cloud.define("finishGame", function(request, response)
 	var user = request.user; // request.user replaces Parse.User.current()
 	var token = user.getSessionToken(); // get session token from request.user
 	
+	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
-	query.equalTo('recipient', user);
+	//query.equalTo('recipient', user);
 	query.find({ sessionToken: token }) // pass the session token to find()
 	.then(function(messages)
 	{
+		console.log("return query");
 		response.success(messages);
 	});
 	
