@@ -10,7 +10,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
-	//query.equalTo('recipient', user);
+	query.equalTo('recipient', user);
 	query.find(
 	{
 		success: function(results)
@@ -20,10 +20,13 @@ Parse.Cloud.define("finishGame", function(request, response)
 				var object = results[i];
 				console.log("id" + object.id);
 			}
+			
+			response.success("success");
 		},
 		error: function(error)
 		{
 			console.log("Error: " + error.code + " " + error.message);
+			response.error(error);
 		}
 	});
 	
