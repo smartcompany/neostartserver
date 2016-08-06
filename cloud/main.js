@@ -10,6 +10,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 	
 	console.log("parse query user");
 	var query = new Parse.Query(Parse.User);
+	/*
 	query.equalTo('recipient', user);
 	query.find(
 	{
@@ -29,7 +30,36 @@ Parse.Cloud.define("finishGame", function(request, response)
 			response.error(error);
 		}
 	});
+	 */
 	
+	console.log("user id" + user.id);
+	query.get(user.id,
+	{
+		success: function(findUser)
+		{
+			if(findUser.get("highScore") < score)
+			{
+				console.log("set high score to " + score);
+				findUser.set("highScore", score);
+			}
+			
+			if(findUser.get("highScoreWeek") < score)
+			{
+				console.log("set weekly high score to " + score);
+				findUser.set("highScoreWeek", score);
+			}
+			findUser.save();
+			
+			console.log("success");
+			
+			response.success("success");
+		},
+		error: function(error)
+		{
+			console.error("Got an error " + error.code + " : " + error.message);
+			response.error(error);
+		}
+	});
  
 	/*
 	var map = request.params;
