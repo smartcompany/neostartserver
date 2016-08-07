@@ -44,7 +44,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
 	var user = request.object;
 	
-	console.log("request.object" + request.object);
+	console.log("request.url" + request.url);
 	
 	for(key in user)
 	{
