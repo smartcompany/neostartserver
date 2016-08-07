@@ -42,11 +42,10 @@ Parse.Cloud.define("finishGame", function(request, response)
 
 Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
-	var user = request.object;
-	var params = request.params;
+	var user = request.object.user;
 	
-	console.log("request.user" + request.user);
 	console.log("request.object" + request.object);
+	console.log("request.user" + user);
 	
 	for(key in user)
 	{
@@ -57,11 +56,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 	{
 		console.log("params is null");
 	}
-	
-	for(key in params)
-	{
-		console.log("key " + key + "value " + params[key]);
-	}
+ 
 	
 	var score = params["score"];
 	
