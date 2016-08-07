@@ -3,8 +3,8 @@
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
-//var mongodb = 'mongodb://neostart:k5882@ds145295.mlab.com:45295/neostartserver';
-var mongodb = 'mongodb://smart:k12345@ds017173.mlab.com:17173/neostart';
+var mongodb = 'mongodb://neostart:k5882@ds145295.mlab.com:45295/neostartserver';
+//var mongodb = 'mongodb://smart:k12345@ds017173.mlab.com:17173/neostart';
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI || mongodb;
 
 if (!databaseUri) {
