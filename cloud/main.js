@@ -42,10 +42,9 @@ Parse.Cloud.define("finishGame", function(request, response)
 
 Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
-	var user = request.object.user;
+	var user = request.object;
 	
 	console.log("request.object" + request.object);
-	console.log("request.user" + user);
 	
 	for(key in user)
 	{
