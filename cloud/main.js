@@ -39,7 +39,7 @@ Parse.Cloud.define("finishGame", function(request, response)
 		response.success("success");
 	});
 });
-
+/*
 Parse.Cloud.beforeSave(Parse.User, function(request, response)
 {
 	var user = request.object;
@@ -82,7 +82,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response)
 		response.success("success");
 	});
 });
-
+*/
 
 /*
 function updateTicketCount()
